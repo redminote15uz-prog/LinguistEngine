@@ -1,0 +1,6 @@
+{
+  "name": "Vocabulary Story Generator",
+  "description": "Generates level-appropriate stories from an English vocabulary list, with translations in Russian and Uzbek, highlighting all vocabulary words and offering text-to-speech audio playback.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

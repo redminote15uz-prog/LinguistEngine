@@ -96,9 +96,11 @@ export default function App() {
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');
+      document.body.classList.add('dark', 'bg-slate-950');
       localStorage.setItem('polystory_dark_mode_v1', 'true');
     } else {
       document.documentElement.classList.remove('dark');
+      document.body.classList.remove('dark', 'bg-slate-950');
       localStorage.setItem('polystory_dark_mode_v1', 'false');
     }
   }, [isDarkMode]);
@@ -554,21 +556,21 @@ export default function App() {
               <div className="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto text-center space-y-6 py-12">
                 <div className="relative flex items-center justify-center">
                   {/* Spinner animation */}
-                  <div className="w-16 h-16 rounded-full border-4 border-slate-200 border-t-indigo-600 animate-spin"></div>
-                  <BookOpen className="w-6 h-6 text-indigo-600 absolute" />
+                  <div className="w-16 h-16 rounded-full border-4 border-slate-200 dark:border-slate-800 border-t-indigo-600 animate-spin"></div>
+                  <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400 absolute" />
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-lg font-bold text-slate-900">Crafting Story Context</h3>
-                  <p className="text-xs text-slate-500 max-w-xs mx-auto">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white">Crafting Story Context</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xs mx-auto">
                     Our language generator is engineering a cohesive, level-appropriate story including definitions and mappings.
                   </p>
                 </div>
 
                 {/* Current Loading Step */}
-                <div className="bg-white border border-slate-200 p-4 rounded-xl w-full flex items-center gap-3 shadow-xs">
-                  <div className="w-1.5 h-1.5 bg-indigo-600 rounded-full animate-ping"></div>
-                  <span className="text-xs font-semibold text-slate-700 animate-pulse text-left">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-xl w-full flex items-center gap-3 shadow-xs">
+                  <div className="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full animate-ping"></div>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 animate-pulse text-left">
                     {LOADING_STEPS[loadingStepIndex]}
                   </span>
                 </div>
@@ -859,7 +861,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-slate-200 px-6 py-3 text-center text-[10px] text-slate-400 font-medium shrink-0">
+      <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 px-6 py-3 text-center text-[10px] text-slate-400 dark:text-slate-500 font-medium shrink-0">
         PolyStory Language Reader &copy; 2026. Made with Google Gemini Generative Intelligence.
       </footer>
     </div>

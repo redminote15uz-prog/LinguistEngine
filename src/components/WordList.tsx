@@ -40,11 +40,11 @@ export default function WordList({
     }
   }, [highlightedWord, mapping]);
 
-  const speakWord = async (word: string) => {
+  const speakWord = (word: string) => {
     if (playingWord) return;
     setPlayingWord(word);
 
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       try {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(word);
@@ -64,56 +64,10 @@ export default function WordList({
         };
         window.speechSynthesis.speak(utterance);
       } catch (err) {
-        console.error('Local synthesis failed, trying fallback:', err);
-        tryFallbackTTS(word);
+        console.error('Local synthesis failed:', err);
+        setPlayingWord(null);
       }
     } else {
-      tryFallbackTTS(word);
-    }
-  };
-
-  const tryFallbackTTS = async (word: string) => {
-    try {
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: word, voice: 'Kore' })
-      });
-
-      if (!response.ok) {
-        throw new Error('TTS failed');
-      }
-
-      const { audioData } = await response.json();
-      const binaryString = window.atob(audioData);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      
-      const numSamples = len / 2;
-      const int16Array = new Int16Array(bytes.buffer);
-      
-      const AudioCtxClass = window.AudioContext || (window as any).webkitAudioContext;
-      const audioCtx = new AudioCtxClass({ sampleRate: 24000 });
-      const buffer = audioCtx.createBuffer(1, numSamples, 24000);
-      const channelData = buffer.getChannelData(0);
-      
-      for (let i = 0; i < numSamples; i++) {
-        channelData[i] = int16Array[i] / 32768.0;
-      }
-      
-      const source = audioCtx.createBufferSource();
-      source.buffer = buffer;
-      source.connect(audioCtx.destination);
-      source.onended = () => {
-        setPlayingWord(null);
-        audioCtx.close();
-      };
-      source.start(0);
-    } catch (e) {
-      console.error(e);
       setPlayingWord(null);
     }
   };
